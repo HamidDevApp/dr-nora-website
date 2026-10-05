@@ -1,0 +1,92 @@
+@import "tailwindcss";
+
+/*
+ * Design tokens (Tailwind v4) : chaque variable --color-* devient une
+ * classe utilitaire (bg-alabaster, text-graphite, border-champagne...).
+ *
+ * Palette « luxe » : albâtre, cachemire, obsidienne, or champagne, graphite.
+ * Les anciens noms (ivory, sand, ink...) pointent vers la nouvelle palette
+ * pour que les pages internes suivent sans être réécrites.
+ */
+@theme {
+  --color-alabaster: #fbfbf9;
+  --color-cashmere: #f6f3ed;
+  --color-obsidian: #121212;
+  --color-obsidian-soft: #1a1917;
+  --color-graphite: #2b2b2a;
+  --color-champagne: #c5a880;
+  --color-champagne-light: #d4b996;
+  --color-champagne-700: #8a6f4c;
+
+  /* Alias historiques */
+  --color-ivory: #fbfbf9;
+  --color-sand: #f6f3ed;
+  --color-line: #e8e2d8;
+  --color-ink: #2b2b2a;
+  --color-stone: #75726c;
+  --color-sage-100: #e6edeb;
+  --color-sage-600: #4a6762;
+
+  /* Alimentées par next/font dans app/layout.tsx */
+  --font-serif: var(--font-cormorant), "Times New Roman", serif;
+  --font-sans: var(--font-jakarta), system-ui, sans-serif;
+
+  --animate-marquee: marquee 40s linear infinite;
+
+  @keyframes marquee {
+    from {
+      transform: translateX(0);
+    }
+    to {
+      transform: translateX(-50%);
+    }
+  }
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 80px; /* la barre fixe ne masque pas les titres */
+}
+
+body {
+  background: var(--color-alabaster);
+  color: var(--color-graphite);
+  font-family: var(--font-sans);
+  font-weight: 300;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+::selection {
+  background: var(--color-champagne-light);
+  color: var(--color-obsidian);
+}
+
+/* Grain photographique très léger sur les sections sombres */
+.grain {
+  position: relative;
+  isolation: isolate;
+}
+.grain::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  opacity: 0.05;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* Harmonise les photos provisoires (tons chauds, contraste doux) */
+.photo-warm {
+  filter: saturate(0.82) sepia(0.12) contrast(0.98);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  .animate-marquee {
+    animation: none;
+  }
+}

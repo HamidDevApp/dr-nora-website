@@ -1,0 +1,37 @@
+@import "tailwindcss";
+
+/*
+ * Design tokens (Tailwind v4) : chaque variable --color-* devient une
+ * classe utilitaire (bg-ivory, text-ink, text-sage-600, ring-champagne...).
+ */
+@theme {
+  --color-ivory: #faf8f5;
+  --color-sand: #f3eee7;
+  --color-line: #e7e0d6;
+  --color-ink: #1f2a2e;
+  --color-stone: #6b6b66;
+  --color-sage-100: #e6edeb;
+  --color-sage-600: #4a6762;
+  --color-champagne: #b89b72;
+  --color-champagne-700: #7d6141;
+
+  /* Alimentées par next/font dans app/layout.tsx */
+  --font-serif: var(--font-cormorant), "Times New Roman", serif;
+  --font-sans: var(--font-manrope), system-ui, sans-serif;
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 80px; /* la barre fixe ne masque pas les titres */
+}
+
+body {
+  background: var(--color-ivory);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+::selection {
+  background: var(--color-sage-100);
+}

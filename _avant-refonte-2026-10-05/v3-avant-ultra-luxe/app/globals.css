@@ -1,0 +1,95 @@
+@import "tailwindcss";
+
+/*
+ * Design tokens (Tailwind v4) : chaque variable --color-* devient une
+ * classe utilitaire (bg-alabaster, text-taupe, border-gold/30...).
+ *
+ * « Quiet luxury » : uniquement des tons chauds. Aucun noir ni blanc purs.
+ * Les anciens noms (ivory, sand, ink, sage...) pointent vers la nouvelle
+ * palette : les pages internes suivent sans être réécrites.
+ */
+@theme {
+  /* Fonds sombres */
+  --color-obsidian: #121110; /* obsidienne chaude : hero, contact */
+  --color-charcoal: #161513; /* charbon chaud : sanctuaire du Dr Nora */
+  --color-obsidian-soft: #1d1b18; /* cartes posées sur fond sombre */
+
+  /* Fonds clairs */
+  --color-alabaster: #faf8f5;
+  --color-cashmere: #f3efea;
+
+  /* Or champagne */
+  --color-gold: #c5a880;
+  --color-gold-deep: #b89358;
+  --color-gold-light: #d4b996; /* sur fond sombre */
+  --color-gold-ink: #8c7350; /* petits textes dorés sur fond clair (contraste) */
+
+  /* Textes */
+  --color-graphite: #2e2a26; /* titres sur fond clair */
+  --color-taupe: #4a4642; /* texte courant sur fond clair */
+  --color-mist: #d6d1ca; /* texte courant sur fond sombre */
+
+  /* Alias historiques, utilisés par les autres pages */
+  --color-ivory: var(--color-alabaster);
+  --color-sand: var(--color-cashmere);
+  --color-line: #e6ded3;
+  --color-ink: var(--color-graphite);
+  --color-stone: #6e675f;
+  --color-sage-100: #efe8dc;
+  --color-sage-600: var(--color-gold-ink);
+  --color-champagne: var(--color-gold);
+  --color-champagne-700: var(--color-gold-ink);
+
+  /* Alimentées par next/font dans app/layout.tsx */
+  --font-serif: var(--font-cormorant), "Times New Roman", serif;
+  --font-sans: var(--font-jakarta), system-ui, sans-serif;
+
+  /* Halo chaud des cartes de luxe */
+  --shadow-glow: 0 0 0 1px rgba(197, 168, 128, 0.14), 0 30px 80px -30px rgba(197, 168, 128, 0.32);
+  --shadow-glow-lg: 0 0 0 1px rgba(197, 168, 128, 0.22), 0 40px 110px -30px rgba(197, 168, 128, 0.42);
+
+  --animate-marquee: marquee 56s linear infinite;
+
+  @keyframes marquee {
+    from {
+      transform: translateX(0);
+    }
+    to {
+      transform: translateX(-50%);
+    }
+  }
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 80px; /* la barre fixe ne masque pas les titres */
+}
+
+body {
+  background: var(--color-alabaster);
+  color: var(--color-taupe);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+::selection {
+  background: var(--color-gold-light);
+  color: var(--color-obsidian);
+}
+
+/* Lueur chaude d'ambiance (rgba(197,168,128,0.08)) à poser sur une carte */
+.ambient-glow {
+  background-image: radial-gradient(120% 90% at 0% 0%, rgba(197, 168, 128, 0.08), transparent 60%),
+    radial-gradient(100% 80% at 100% 100%, rgba(197, 168, 128, 0.08), transparent 55%);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  .animate-marquee {
+    animation: none;
+  }
+}

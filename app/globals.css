@@ -1,0 +1,142 @@
+@import "tailwindcss";
+
+/*
+ * Design tokens (Tailwind v4) : chaque variable --color-* devient une
+ * classe utilitaire (bg-obsidian, text-bone, border-gold/20...).
+ *
+ * Direction « ultra-luxe architectural » : deux matières seulement,
+ * l'obsidienne veloutée et l'os/cachemire, séparées par des filets d'or
+ * d'un pixel. Aucun fondu brumeux entre les sections.
+ * Les anciens noms (ivory, sand, ink...) pointent vers cette palette pour que
+ * les pages internes suivent sans être réécrites.
+ */
+@theme {
+  /* Matières */
+  --color-obsidian: #0d0d0c;
+  --color-obsidian-soft: #151413; /* cartes posées sur l'obsidienne */
+  --color-bone: #f8f6f2;
+  --color-bone-deep: #efebe4; /* second plan clair */
+
+  /* Or champagne */
+  --color-gold: #c5a880;
+  --color-gold-light: #dcc6a2; /* texte doré sur fond sombre */
+  --color-gold-ink: #8a6f48; /* petits textes dorés sur fond clair (contraste AA) */
+
+  /* Textes */
+  --color-graphite: #1f1d1b; /* titres sur fond clair */
+  --color-taupe: #4a4642; /* texte courant sur fond clair */
+  --color-mist: #d6d1ca; /* texte courant sur fond sombre */
+
+  /* Alias historiques (pages internes, composants partagés) */
+  --color-alabaster: var(--color-bone);
+  --color-cashmere: var(--color-bone-deep);
+  --color-ivory: var(--color-bone);
+  --color-sand: var(--color-bone-deep);
+  --color-line: #e4ddd2;
+  --color-ink: var(--color-graphite);
+  --color-stone: #6e675f;
+  --color-sage-100: #efe8dc;
+  --color-sage-600: var(--color-gold-ink);
+  --color-champagne: var(--color-gold);
+  --color-champagne-700: var(--color-gold-ink);
+  --color-gold-deep: var(--color-gold-ink);
+
+  /* Alimentées par next/font dans app/layout.tsx */
+  --font-serif: var(--font-cormorant), "Times New Roman", serif;
+  --font-sans: var(--font-jakarta), system-ui, sans-serif;
+
+  --animate-marquee: marquee 60s linear infinite;
+
+  @keyframes marquee {
+    from {
+      transform: translateX(0);
+    }
+    to {
+      transform: translateX(-50%);
+    }
+  }
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 80px; /* la barre fixe ne masque pas les titres */
+}
+
+body {
+  background: var(--color-bone);
+  color: var(--color-taupe);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+::selection {
+  background: var(--color-gold);
+  color: var(--color-obsidian);
+}
+
+/* Filet d'or brossé : ligne d'un pixel plus lumineuse au centre */
+.hairline-gold {
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    rgba(197, 168, 128, 0.12),
+    rgba(197, 168, 128, 0.55) 50%,
+    rgba(197, 168, 128, 0.12)
+  );
+}
+
+/*
+ * Reflet doré qui balaie une carte au survol. À poser sur un parent `group`
+ * en position relative + overflow hidden. Animé uniquement par transform
+ * (GPU), donc fluide à 60 i/s.
+ */
+.shimmer::after {
+  content: "";
+  position: absolute;
+  inset: -20% auto -20% -60%;
+  width: 45%;
+  pointer-events: none;
+  background: linear-gradient(
+    100deg,
+    transparent 0%,
+    rgba(220, 198, 162, 0) 20%,
+    rgba(220, 198, 162, 0.22) 50%,
+    rgba(220, 198, 162, 0) 80%,
+    transparent 100%
+  );
+  transform: translateX(0) skewX(-14deg);
+  transition: transform 1.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.group:hover .shimmer::after,
+.shimmer:hover::after {
+  transform: translateX(420%) skewX(-14deg);
+}
+
+/* Grain photographique imperceptible sur l'obsidienne : donne le « velours » */
+.velvet {
+  position: relative;
+  isolation: isolate;
+}
+.velvet::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  opacity: 0.045;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  .animate-marquee {
+    animation: none;
+  }
+  .shimmer::after {
+    display: none;
+  }
+}
